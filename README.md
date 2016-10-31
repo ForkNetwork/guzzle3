@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/ForkNetwork/guzzle3.svg?branch=master)](http://travis-ci.org/ForkNetwork/guzzle3)
+
 Guzzle, PHP HTTP client and webservice framework
 ================================================
 
@@ -12,9 +14,6 @@ documentation for Guzzle version 5+ can be found at
 Guzzle 3 is no longer maintained and is now end of life.
 
 ### About Guzzle 3
-
-[![Composer Downloads](https://poser.pugx.org/guzzle/guzzle/d/total.png)](https://packagist.org/packages/guzzle/guzzle)
- [![Build Status](https://secure.travis-ci.org/guzzle/guzzle3.png?branch=master)](http://travis-ci.org/guzzle/guzzle3)
 
 - Extremely powerful API provides all the power of cURL with a simple interface.
 - Truly take advantage of HTTP/1.1 with persistent connections, connection pooling, and parallel requests.
