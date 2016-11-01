@@ -99,7 +99,7 @@ class PhpStreamRequestFactoryTest extends \Guzzle\Tests\GuzzleTestCase
     {
         $this->getServer()->flush();
         $this->getServer()->enqueue("HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nhi");
-        $request = $this->client->put('/', array('Foo' => 'Bar'), 'Testing...123');
+        $request = $this->client->put('/', array('Foo' => 'Bar', 'Content-Type' => 'application/x-www-form-urlencode'), 'Testing...123');
         $stream = $this->factory->fromRequest($request);
         $this->assertEquals('hi', (string) $stream);
 

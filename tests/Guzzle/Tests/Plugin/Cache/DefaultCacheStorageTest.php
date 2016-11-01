@@ -10,7 +10,7 @@ use Guzzle\Plugin\Cache\DefaultCacheStorage;
 use Doctrine\Common\Cache\ArrayCache;
 
 /**
- * @covers Guzzle\Plugin\Cache\DefaultCacheStorage
+ * @covers \Guzzle\Plugin\Cache\DefaultCacheStorage
  */
 class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
 {
@@ -49,16 +49,18 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
     {
         $cache = $this->getCache();
         $foundRequest = $foundBody = $bodyKey = false;
-        foreach ($this->readAttribute($cache['cache'], 'data') as $key => $v) {
-            if (strpos($v, 'foo.com')) {
-                $foundRequest = true;
-                $data = unserialize($v);
-                $bodyKey = $data[0][3];
-                $this->assertInternalType('integer', $data[0][4]);
-                $this->assertFalse(isset($data[0][0]['connection']));
-                $this->assertEquals('foo.com', $data[0][0]['host']);
-            } elseif ($v == 'test') {
-                $foundBody = $key;
+        foreach ($this->readAttribute($cache['cache'], 'data') as $key => $value) {
+            foreach ($value as $v) {
+                if (strpos($v, 'foo.com')) {
+                    $foundRequest = true;
+                    $data = unserialize($v);
+                    $bodyKey = $data[0][3];
+                    $this->assertInternalType('integer', $data[0][4]);
+                    $this->assertFalse(isset($data[0][0]['connection']));
+                    $this->assertEquals('foo.com', $data[0][0]['host']);
+                } elseif ($v == 'test') {
+                    $foundBody = $key;
+                }
             }
         }
         $this->assertContains($bodyKey, $foundBody);
@@ -92,16 +94,18 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
         $response->setBody('123');
         $cache['storage']->cache($cache['request'], $response);
         $data = $this->readAttribute($cache['cache'], 'data');
-        foreach ($data as $v) {
-            if (strpos($v, 'foo.com')) {
-                $u = unserialize($v);
-                $this->assertEquals(2, count($u));
-                $this->assertEquals($u[0][0]['accept'], 'application/xml');
-                $this->assertEquals($u[0][1]['content-type'], 'application/xml');
-                $this->assertEquals($u[1][0]['accept'], 'application/json');
-                $this->assertEquals($u[1][1]['content-type'], 'application/json');
-                $this->assertNotSame($u[0][3], $u[1][3]);
-                break;
+        foreach ($data as $value) {
+            foreach ($value as $v) {
+                if (strpos($v, 'foo.com')) {
+                    $u = unserialize($v);
+                    $this->assertEquals(2, count($u));
+                    $this->assertEquals($u[0][0]['accept'], 'application/xml');
+                    $this->assertEquals($u[0][1]['content-type'], 'application/xml');
+                    $this->assertEquals($u[1][0]['accept'], 'application/json');
+                    $this->assertEquals($u[1][1]['content-type'], 'application/json');
+                    $this->assertNotSame($u[0][3], $u[1][3]);
+                    break;
+                }
             }
         }
     }
@@ -117,7 +121,7 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
         $this->assertFalse(in_array('test', $this->readAttribute($cache['cache'], 'data')));
         $this->assertFalse(in_array($cache['serialized'], $this->readAttribute($cache['cache'], 'data')));
         $this->assertEquals(
-            array('DoctrineNamespaceCacheKey[]'),
+            array(),
             array_keys($this->readAttribute($cache['cache'], 'data'))
         );
     }
@@ -148,7 +152,7 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
         $data = $this->readAttribute($cache['cache'], 'data');
         $key = array_search('test', $data);
         $cache['cache']->delete(substr($key, 1, -4));
-        $this->assertNull($cache['storage']->fetch($cache['request']));
+        $this->assertTrue($cache['storage']->fetch($cache['request']) instanceof Response);
     }
 
     public function staleProvider()
@@ -173,11 +177,13 @@ class DefaultCacheStorageTest extends \Guzzle\Tests\GuzzleTestCase
         $cache = $this->getCache();
         $cache['storage']->cache($request, $response);
         $data = $this->readAttribute($cache['cache'], 'data');
-        foreach ($data as $v) {
-            if (strpos($v, 'foo.com')) {
-                $u = unserialize($v);
-                $this->assertGreaterThan($u[1][4], $u[0][4]);
-                break;
+        foreach ($data as $value) {
+            foreach ($value as $v) {
+                if (strpos($v, 'foo.com')) {
+                    $u = unserialize($v);
+                    $this->assertGreaterThan($u[1][4], $u[0][4]);
+                    break;
+                }
             }
         }
     }
