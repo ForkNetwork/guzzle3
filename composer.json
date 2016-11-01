@@ -1,5 +1,5 @@
 {
-    "name": "guzzle/guzzle",
+    "name": "forknetwork/guzzle3",
     "type": "library",
     "description": "PHP HTTP client. This library is deprecated in favor of https://packagist.org/packages/guzzlehttp/guzzle",
     "keywords": ["framework", "http", "rest", "web service", "curl", "client", "HTTP client"],
@@ -47,7 +47,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Guzzle\\": "src/Guzzle/",
+            "Guzzle\\": "src/Guzzle/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Guzzle\\Tests\\": "tests/Guzzle/Tests/"
         }
     },
@@ -56,6 +60,9 @@
     },
     "scripts": {
         "test": "phpunit"
+    },
+    "replace": {
+        "guzzle/guzzle": "*"
     },
     "require-dev": {
         "doctrine/cache": "^1.6.0",
