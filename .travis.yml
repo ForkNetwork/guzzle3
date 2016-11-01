@@ -1,17 +1,36 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
   - hhvm
+  - 7.0
+  - 7.1
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.5
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.6
+      env: SYMFONY_VERSION=3.1.*
+  allow_failures:
+    - php: hhvm
+    - php: 7.0
+    - php: 7.1
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
 before_script:
   - curl --version
   - pecl install uri_template-beta || echo "pecl uri_template not available"
   - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
   - ~/.nvm/nvm.sh install v0.6.14
 
 script: composer test

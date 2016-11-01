@@ -9,6 +9,7 @@ use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 use Guzzle\Http\Exception\RequestException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Send {@see RequestInterface} objects in parallel using curl_multi
@@ -211,7 +212,15 @@ class CurlMulti extends AbstractHasDispatcher implements CurlMultiInterface
             foreach ($this->requests as $request) {
                 ++$total;
                 $event['request'] = $request;
-                $request->getEventDispatcher()->dispatch(self::POLLING_REQUEST, $event);
+
+                /** @var EventDispatcherInterface $dispatcher */
+                $dispatcher = $request->getEventDispatcher();
+                $eventName = self::POLLING_REQUEST;
+
+                $event->setEventDispatcher($dispatcher);
+                $event->setName($eventName);
+
+                $dispatcher->dispatch($eventName, $event);
                 // The blocking variable just has to be non-falsey to block the loop
                 if ($request->getParams()->hasKey(self::BLOCKING)) {
                     ++$blocking;
