@@ -17,6 +17,7 @@
         }
     ],
     "replace": {
+        "guzzle/guzzle": "*",
         "guzzle/batch": "self.version",
         "guzzle/cache": "self.version",
         "guzzle/common": "self.version",
@@ -60,9 +61,6 @@
     },
     "scripts": {
         "test": "phpunit"
-    },
-    "replace": {
-        "guzzle/guzzle": "*"
     },
     "require-dev": {
         "doctrine/cache": "^1.6.0",
