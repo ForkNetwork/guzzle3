@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/ForkNetwork/guzzle3.svg?branch=master)](http://travis-ci.org/ForkNetwork/guzzle3)
+[![Build Status](https://secure.travis-ci.org/ForkNetwork/guzzle3.svg?branch=master)](http://travis-ci.org/ForkNetwork/guzzle3) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ForkNetwork/guzzle3/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ForkNetwork/guzzle3/?branch=master)
 
 Guzzle, PHP HTTP client and webservice framework
 ================================================
